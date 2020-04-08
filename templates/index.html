@@ -1,0 +1,22 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>WAPPGO</title>
+    <link rel="stylesheet" type="text/css" href="/static/index.css">
+  </head>
+  <body>
+    <h1>WAPPGO comments from redis</h1>
+    <form method="POST">
+      <textarea name="comment"></textarea>
+      <div>
+        <button type="submit">Post comment</button>
+      </div>
+    </form>
+    {{ range . }}
+    <div>
+      {{ . }}
+    </div>
+    {{ end }}
+
+  </body>
+</html>
