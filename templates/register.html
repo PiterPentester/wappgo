@@ -6,6 +6,11 @@
   </head>
   <body>
     <h1>WAPPGO New user</h1>
+    {{ if . }}
+    <div class="error">
+    {{ . }}
+    </div>
+    {{ end }}
     <form method="POST">
       <div>Username: <input name="username"></input></div>
       <div>Pass: <input name="password" type="password"></input></div>
