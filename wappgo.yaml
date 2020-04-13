@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: Deployment                 # Type of Kubernetes resource
+metadata:
+  name: wappgo             # Unique name of the Kubernetes resource
+spec:
+  replicas: 2                    # Number of pods to run at any given time
+  selector:
+    matchLabels:
+      app: wappgo          # This deployment applies to any Pods matching the specified label
+  template:                      # This deployment will create a set of pods using the configurations in this template
+    metadata:
+      labels:                    # The labels that will be applied to all of the pods in this deployment
+        app: wappgo
+    spec:
+      containers:
+      - name: wappgo
+        image: piterpentester/wappgo:v0.2
+        imagePullPolicy: IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 100Mi
+        ports:
+          - containerPort: 8080  # Should match the port number that the Go application listens on
+        env:                     # Environment variables passed to the container
+          - name: REDIS_HOST
+            value: redis-master
+          - name: REDIS_PORT
+            value: "6379"
+---
+apiVersion: v1
+kind: Service                    # Type of kubernetes resource
+metadata:
+  name: wappgo-service     # Unique name of the resource
+spec:
+  type: NodePort                 # Expose the Pods by opening a port on each Node and proxying it to the service.
+  ports:                         # Take incoming HTTP requests on port 9090 and forward them to the targetPort of 8080
+  - name: http
+    port: 9090
+    targetPort: 8080
+  selector:
+    app: wappgo            # Map any pod with label `app=go-redis-app` to this service
