@@ -5,7 +5,6 @@ import (
 	"fmt"
 
 	"github.com/go-redis/redis"
-	"golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -59,11 +58,12 @@ func (user *User) Authenticate(password string) error {
 	if err != nil {
 		return err
 	}
-	err = bcrypt.CompareHashAndPassword(hash, []byte(password))
-	if err == bcrypt.ErrMismatchedHashAndPassword {
+
+	//err = bcrypt.CompareHashAndPassword(hash, []byte(password))
+	if string(hash) != password { //err == bcrypt.ErrMismatchedHashAndPassword {
 		return ErrInvalidLogin
 	}
-	return err
+	return nil
 }
 
 func GetUserByID(id int64) (*User, error) {
@@ -89,11 +89,14 @@ func AuthenticateUser(username, password string) (*User, error) {
 }
 
 func RegisterUser(username, password string) error {
-	cost := bcrypt.DefaultCost
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), cost)
-	if err != nil {
-		return err
-	}
-	_, err = NewUser(username, hash)
+	//cost := bcrypt.DefaultCost
+	hash := password
+	/*
+		hash, err := bcrypt.GenerateFromPassword([]byte(password), cost)
+		if err != nil {
+			return err
+		}
+	*/
+	_, err := NewUser(username, []byte(hash))
 	return err
 }

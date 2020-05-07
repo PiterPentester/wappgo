@@ -11,6 +11,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// NewRouter - create router & handlers for our server
 func NewRouter() *mux.Router {
 	r := mux.NewRouter()
 	r.HandleFunc("/", middleware.AuthRequired(indexGetHandler)).Methods("GET")
