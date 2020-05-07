@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: wappgo
-        image: piterpentester/wappgo:v0.2
+        image: piterpentester/wappgo:unsecure
         imagePullPolicy: IfNotPresent
         resources:
           requests:
